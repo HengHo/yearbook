@@ -2,7 +2,7 @@
   <q-layout view="hHh Lpr lfr">
     <q-header
       reveal
-      class="header bg-primary text-secondary q-pt-md"
+      :class=classnav
       height-hint="98"
     >
       <q-toolbar>
@@ -14,6 +14,9 @@
           </q-avatar> -->
           <p class="text-weight-bolder q-py-md text-h4">YEARBOOKS</p>
         </q-toolbar-title>
+        <q-item-section side>
+                <q-toggle v-model="blueModel"/>
+              </q-item-section>
         <div class="desktop-only">
           <q-avatar icon="person" color="accent" text-color="white" />
           <q-avatar
@@ -59,15 +62,29 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from "vue";
+import { ref,onMounted,watch } from "vue";
 import { YearbookApi } from "src/api/YearbookApi";
-
+import { useQuasar } from 'quasar'
+const classnav = ref("header bg-primary text-secondary q-pt-md");
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(false);
 const tab = ref("book");
+const blueModel=  ref(false);
+const $q = useQuasar();
 const toggleRightDrawer = () => {
   rightDrawerOpen.value = !rightDrawerOpen.value;
 };
+watch(blueModel, async (newValue) => {
+        console.log(`count is: ${newValue}`)
+        if(newValue == false){
+
+          classnav.value = "header bg-primary text-secondary q-pt-md"
+        }
+        else{
+          classnav.value = "header bg-dark text-warning q-pt-md"
+        }
+        $q.dark.toggle(blueModel.value)
+      })
 
 </script>
 

@@ -1,10 +1,10 @@
 import { useAxios } from "src/composibles/useAxios";
 export const YearbookApi = () => {
   const { callApi } = useAxios();
-  const MajorList = async (year) => {
+  const MajorList = async (year,order) => {
     return await callApi({
       method: "GET",
-      url: `/yearbookByYear?_year=${year}`
+      url: `/yearbookByYear?_year=${year}&sortMode=${order}`
     })
   };
   const YearList = async () => {

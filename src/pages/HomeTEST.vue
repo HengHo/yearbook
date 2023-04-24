@@ -26,21 +26,22 @@
       <p class="text-h6">
         {{ item.name }}
       </p>
-      <section class="q-pl-xl">
-        <div v-for="(subitems, subindex) in item.classle" :key="subindex" class="q-gutter-xl row q-mb-xl">
-          <q-card v-if="subitems.classle != null" class="my-card col-3">
+      <section v-if="item.classle.length" class="q-pl-xl">
+        <div class="q-gutter-xl row q-mb-xl">
+          <q-card  v-for="(subitems, subindex) in item.classle" :key="subindex" class="my-card col-sm-3 col-10 ">
             <q-img :src=subitems.picture.path >
               
             </q-img>
-            <q-img src="../assets/images.png"></q-img>
             
             <p class="row justify-center">
           {{ subitems.class}} 
         </p>
           </q-card>
+         
           
         </div>
       </section>
+      <section v-else class="q-ml-xl">ไม่มีข้อมูล</section>
      
       
       
@@ -91,6 +92,7 @@ const yearsList = ref([]);
 const majorList = ref([]);
 const routet = useRouter();
 const sel = ref(true);
+const order = ref([LocalStorage.getItem("order")]);
 const List = ref([]);
 const options = ref([]);
 onMounted(async () => {
@@ -101,10 +103,15 @@ onMounted(async () => {
 
 const toggleTrue = () => {
   sel.value = true;
+  order.value = "asc";
+  // console.log(order.value);
+
   console.log(sel.value);
 };
 const toggleFalse = () => {
   sel.value = false;
+  order.value = "desc";
+
   console.log(sel.value);
 };
 
@@ -135,7 +142,7 @@ const fetchYears = async () => {
 
 const fetchMajor = async () => {
   loading.value = true;
-  const respone = await MajorList(Year.value);
+  const respone = await MajorList(Year.value,order.value);
   loading.value = false;
   if (respone) {
     majorList.value = respone.dataList;
@@ -144,10 +151,15 @@ const fetchMajor = async () => {
   console.log("majorList", respone)
 };
 watch(Year, async (newVal, oldVal) => {
-  console.log("count changed from ", oldVal, newVal);
   LocalStorage.set("year",newVal);
+  // console.log("order",order.value);
   fetchMajor();
 });
+watch(order, async (newVal, oldVal) => {
+  LocalStorage.set("order",newVal);
+  console.log("order",order.value);
+  fetchMajor();
+})
 
 </script>
 
