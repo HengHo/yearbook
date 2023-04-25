@@ -12,7 +12,7 @@
         @click="toggleTrue"
         label="new"
       />
-      <q-select outlined v-model="Year" :options="options" color=secondary />
+      <q-select outlined v-model="Year" :options="options" color="secondary" />
       <q-btn
         flat
         :class="sel ? 'hide' : 'show'"
@@ -28,44 +28,33 @@
       </p>
       <section v-if="item.classle.length" class="q-pl-xl">
         <div class="q-gutter-xl row q-mb-xl">
-          <q-card  v-for="(subitems, subindex) in item.classle" :key="subindex" class="my-card col-sm-3 col-10 ">
-            <q-img :src=subitems.picture.path >
-              
-            </q-img>
-            
-            <p class="row justify-center">
-          {{ subitems.class}} 
-        </p>
+          <q-card
+            v-for="(subitems, subindex) in item.classle"
+            :key="subindex"
+            class="my-card col-sm-3 col-10"
+          >
+            <q-img :src="subitems.picture.path"> </q-img>
+
+            <p class="q-mt-md row justify-center">
+              {{ subitems.class }}
+            </p>
           </q-card>
-         
-          
         </div>
       </section>
       <section v-else class="q-ml-xl">ไม่มีข้อมูล</section>
-     
-      
-      
-      
     </section>
     <!-- <div class="grainer-to-page"></div> -->
     <!-- ------------------------------------------yearbook------------------------------------------------- -->
-    
+
     <q-page-scroller
       position="bottom-right"
       :scroll-offset="150"
       :offset="[18, 18]"
-      
     >
-    
-    <img
-    srcset="../assets/เด็กถือป้าย-removebg-preview.png 2000w">
-   
-  
+      <img srcset="../assets/เด็กถือป้าย-removebg-preview.png 2000w" />
+
       <!-- <q-btn fab icon="keyboard_arrow_up" color="accent" /> -->
     </q-page-scroller>
-
-
-
   </q-page>
 </template>
 
@@ -77,7 +66,7 @@ import {
   biCaretDownFill,
   biPerson,
 } from "@quasar/extras/bootstrap-icons";
-import { ref, onMounted, watch, computed} from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { scroll } from "quasar";
 import { YearbookApi } from "src/api/YearbookApi";
@@ -87,7 +76,7 @@ import { LocalStorage } from "quasar";
 const Year = ref([LocalStorage.getItem("year")]);
 const slide = ref(1);
 const { MajorList, YearList } = YearbookApi();
-const loading = ref(false); 
+const loading = ref(false);
 const yearsList = ref([]);
 const majorList = ref([]);
 const routet = useRouter();
@@ -98,7 +87,6 @@ const options = ref([]);
 onMounted(async () => {
   fetchYears();
   fetchMajor();
-
 });
 
 const toggleTrue = () => {
@@ -129,10 +117,10 @@ const fetchYears = async () => {
   const respone = await YearList();
   loading.value = false;
   if (respone) {
-    yearsList.value = respone.dataList
-    yearsList.value.forEach(item => {
-      options.value.push(item.year_yearbook)
-    })
+    yearsList.value = respone.dataList;
+    yearsList.value.forEach((item) => {
+      options.value.push(item.year_yearbook);
+    });
   }
 
   // console.log("YearList", respone.dataList)
@@ -142,25 +130,24 @@ const fetchYears = async () => {
 
 const fetchMajor = async () => {
   loading.value = true;
-  const respone = await MajorList(Year.value,order.value);
+  const respone = await MajorList(Year.value, order.value);
   loading.value = false;
   if (respone) {
     majorList.value = respone.dataList;
   }
 
-  console.log("majorList", respone)
+  console.log("majorList", respone);
 };
 watch(Year, async (newVal, oldVal) => {
-  LocalStorage.set("year",newVal);
+  LocalStorage.set("year", newVal);
   // console.log("order",order.value);
   fetchMajor();
 });
 watch(order, async (newVal, oldVal) => {
-  LocalStorage.set("order",newVal);
-  console.log("order",order.value);
+  LocalStorage.set("order", newVal);
+  console.log("order", order.value);
   fetchMajor();
-})
-
+});
 </script>
 
 <style scoped>
