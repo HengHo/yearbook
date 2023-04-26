@@ -23,8 +23,7 @@ const routes = [
       { path: "", component: () => import("../pages/HomeYearbook.vue") },
       { path: "/testpage", component: () => import("../pages/TestPage.vue") },
       { path: "/pv", component: () => import("../testpage/IndexPage.vue") },
-      { path: "reg", component: () => import("pages/RegisterUser.vue") },
-
+      // { path: "reg", component: () => import("src/pages/SignIn1.vue") },
     ],
   },
 
@@ -84,7 +83,9 @@ const routes = [
     path: "/register",
     component: () => import("layouts/BlankLayout.vue"),
     children: [
-      { path: "reg", component: () => import("pages/RegisterUser.vue") },
+      { path: "signUp", component: () => import("pages/SignUp.vue") },
+      { path: "signin", component: () => import("../pages/SignIn.vue") },
+      // { path: ":action", component: () => import("pages/RegisterUser.vue") },
     ],
   },
   // Always leave this as last one,

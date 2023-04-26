@@ -66,7 +66,7 @@ import {
   biCaretDownFill,
   biPerson,
 } from "@quasar/extras/bootstrap-icons";
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, onBeforeMount, onUnmounted,watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { scroll } from "quasar";
 import { YearbookApi } from "src/api/YearbookApi";
@@ -80,7 +80,7 @@ const loading = ref(false);
 const yearsList = ref([]);
 const majorList = ref([]);
 const routet = useRouter();
-const sel = ref(true);
+const sel = ref(LocalStorage.getItem("order") === "asc" ? true:false);
 const order = ref([LocalStorage.getItem("order")]);
 const List = ref([]);
 const options = ref([]);
@@ -88,7 +88,14 @@ onMounted(async () => {
   fetchYears();
   fetchMajor();
 });
-
+// onBeforeMount(async () => {
+//   fetchYears();
+//   fetchMajor();
+// });
+// onUnmounted(async () => {
+//   fetchYears();
+//   fetchMajor();
+// });
 const toggleTrue = () => {
   sel.value = true;
   order.value = "asc";
@@ -117,6 +124,13 @@ const fetchYears = async () => {
   const respone = await YearList();
   loading.value = false;
   if (respone) {
+    if(!localStorage.getItem("year")){
+      LocalStorage.set("year", respone.dataList[0].year_yearbook);
+      Year.value = respone.dataList[0].year_yearbook
+    // LocalStorage.set("order", "asc");
+
+    }
+
     yearsList.value = respone.dataList;
     yearsList.value.forEach((item) => {
       options.value.push(item.year_yearbook);
@@ -130,6 +144,17 @@ const fetchYears = async () => {
 
 const fetchMajor = async () => {
   loading.value = true;
+  console.log("ค่า",Year.value);
+  if(!Year.value){
+    Year.value = localStorage.getItem("year")
+  }
+    if(!localStorage.getItem("year")){
+    LocalStorage.set("order", "asc");
+    order.value = "asc"
+    sel.value = true
+    console.log("sel",sel.value)
+    const respone = await MajorList(Year.value, order.value);
+    }
   const respone = await MajorList(Year.value, order.value);
   loading.value = false;
   if (respone) {

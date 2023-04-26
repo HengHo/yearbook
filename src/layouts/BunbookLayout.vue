@@ -8,7 +8,9 @@
           <!-- <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar> -->
-          <p class="text-weight-bolder q-py-md text-h4">{{ t("studentlist") }}</p>
+          <p class="text-weight-bolder q-py-md text-h4">
+            {{ t("studentlist") }}
+          </p>
         </q-toolbar-title>
         <q-item-section side>
           <q-toggle v-model="blueModel" />
@@ -59,8 +61,12 @@
       </div>
       <div class="q-pa-md">
         <q-btn-group spread>
-          <q-btn color="purple" label="sign In" />
-          <q-btn color="purple" label="sign Out" />
+          <router-link to="/register/signIn">
+            <q-btn color="purple" label="sign In" />
+          </router-link>
+          <router-link to="/register/q/signUp">
+            <q-btn color="purple" label="sign Out" />
+          </router-link>
         </q-btn-group>
       </div>
 
@@ -151,47 +157,43 @@ watch(blueModel, async (newValue) => {
     classnav.value = "header bg-primary text-secondary q-pt-md";
     colordark.value = "accent";
     mode.value = "sunny";
-    
   } else {
     classnav.value = "header bg-dark text-warning q-pt-md";
     colordark.value = "warning";
     mode.value = "bedtime";
   }
-  localStorage.setItem("theme",blueModel.value)
+  localStorage.setItem("theme", blueModel.value);
   $q.dark.toggle(localStorage.getItem("theme"));
 });
 watch(i18, async (newValue) => {
   console.log("i18n", i18.value);
-  if(i18.value == true){
-    locale.value = "th"
-    console.log(locale.value)
-  }else{
-    locale.value ="en";
-    console.log(locale.value)
+  if (i18.value == true) {
+    locale.value = "th";
+    console.log(locale.value);
+  } else {
+    locale.value = "en";
+    console.log(locale.value);
   }
 });
 </script>
 
-<style >
+<style>
 @media screen and (max-width: 600px) {
-    body {
- 
-      padding-inline: 1%;
-      width: 100%;
-    }
-    .header{
-        padding-inline: 1%;
-    }
+  body {
+    padding-inline: 1%;
+    width: 100%;
   }
-  
-  @media screen and (min-width: 600px) {
-    body {
-   
-      padding-inline: 14%;
-  
-    }
-    .header{
-        padding-inline: 14%;
-    }
+  .header {
+    padding-inline: 1%;
   }
+}
+
+@media screen and (min-width: 600px) {
+  body {
+    padding-inline: 14%;
+  }
+  .header {
+    padding-inline: 14%;
+  }
+}
 </style>
